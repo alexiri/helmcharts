@@ -1,0 +1,61 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "deluge.fullname" . }}
+  labels:
+    app: {{ template "deluge.name" . }}
+    chart: {{ template "deluge.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "deluge.name" . }}
+      release: {{ .Release.Name }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ template "deluge.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "deluge.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          resources:
+  {{ toYaml .Values.resources | indent 10 }}
+          ports:
+            - name: rpc
+              containerPort: {{ .Values.service.rpcPort }}
+            - name: p2p
+              containerPort: {{ .Values.service.p2pPort }}
+            - name: p2p-udp
+              containerPort: {{ .Values.service.p2pPort }}
+              protocol: UDP
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              subPath: {{ .Values.persistence.config.subPath }}
+            - name: downloads
+              mountPath: /downloads
+              subPath: {{ .Values.persistence.config.subPath }}
+          readinessProbe:
+            failureThreshold: {{ .Values.probes.failureThreshold }}
+            initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.successThreshold }}
+            tcpSocket:
+              port: {{ .Values.service.p2pPort }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim | default (include "deluge.fullname" .) }}
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.data.existingClaim | default (include "deluge.fullname" .) }}
