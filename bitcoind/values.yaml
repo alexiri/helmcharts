@@ -4,7 +4,7 @@
 
 image:
   repository: felixweis/bitcoind
-  tag: 0.15
+  tag: master
   pullPolicy: IfNotPresent
 
 service:
