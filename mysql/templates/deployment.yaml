@@ -17,6 +17,10 @@ spec:
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
+      securityContext:
+        # Specify fsGroup so that the persistent volume is writable for the
+        # non-privileged uid/gid 999, which is used in mysql’s Dockerfile.
+        fsGroup: 999
       initContainers:
       - name: "remove-lost-found"
         image: "busybox:1.25.0"
