@@ -12,12 +12,15 @@ spec:
   ports:
     - name: rpc
       targetPort: rpc
+      port: {{ .Values.service.rpcPort }}
       nodePort: {{ .Values.service.rpcPortPublic }}
     - name: p2p
       targetPort: p2p
+      port: {{ .Values.service.p2pPort }}
       nodePort: {{ .Values.service.p2pPortPublic }}
     - name: p2p-udp
       targetPort: p2p
+      port: {{ .Values.service.p2pPort }}
       nodePort: {{ .Values.service.p2pPortPublic }}
       protocol: UDP
   selector:

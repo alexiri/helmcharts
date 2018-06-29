@@ -12,6 +12,7 @@ spec:
     matchLabels:
       app: {{ template "deluge.name" . }}
       release: {{ .Release.Name }}
+  serviceName: {{ template "deluge.name" . }}
   replicas: 1
   updateStrategy:
     type: RollingUpdate
