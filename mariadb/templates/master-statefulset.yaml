@@ -110,10 +110,11 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /bitnami/mariadb
+          subPath: {{ .Values.master.persistence.subPath }}
 {{- if .Values.master.config }}
         - name: config
           mountPath: /opt/bitnami/mariadb/conf/my.cnf
-          subPath: my.cnf
+          subPath: {{ .Values.master.persistence.subPath }}/my.cnf
 {{- end }}
 {{- if .Values.metrics.enabled }}
       - name: metrics
