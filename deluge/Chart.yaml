@@ -11,5 +11,5 @@ icon: https://raw.githubusercontent.com/alexiri/helmcharts/master/deluge/Deluge-
 sources:
   - https://github.com/alexiri/helmcharts
 maintainers:
-  - name: alex
+  - name: Alex
     email: alex.iribarren@gmail.com
