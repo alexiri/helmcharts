@@ -8,17 +8,15 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: NodePort
   ports:
     - name: rpc
       port: {{ .Values.service.rpcPort }}
       targetPort: rpc
     - name: p2p
       port: {{ .Values.service.p2pPort }}
+      nodePort: {{ .Values.service.p2pPortPublic }}
       targetPort: p2p
-    - name: testnet
-      port: {{ .Values.service.testnetPort }}
-    - name: testnet-p2p
-      port: {{ .Values.service.testnetP2pPort }}
   selector:
     app: {{ template "bitcoind.name" . }}
     release: {{ .Release.Name }}

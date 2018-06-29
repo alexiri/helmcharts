@@ -1,5 +1,5 @@
 apiVersion: apps/v1beta2
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ template "bitcoind.fullname" . }}
   labels:
@@ -12,10 +12,9 @@ spec:
     matchLabels:
       app: {{ template "bitcoind.name" . }}
       release: {{ .Release.Name }}
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 25%
+  serviceName: {{ template "bitcoind.name" . }}
+  replicas: 1
+  updateStrategy:
     type: RollingUpdate
   template:
     metadata:
