@@ -23,6 +23,10 @@ spec:
       port: {{ .Values.service.p2pPort }}
       nodePort: {{ .Values.service.p2pPortPublic }}
       protocol: UDP
+    - name: web
+      targetPort: web
+      port: {{ .Values.service.webPort }}
+      nodePort: {{ .Values.service.webPortPublic }}
   selector:
     app: {{ template "deluge.name" . }}
     release: {{ .Release.Name }}

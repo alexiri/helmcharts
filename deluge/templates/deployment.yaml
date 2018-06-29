@@ -23,8 +23,8 @@ spec:
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ template "deluge.fullname" . }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: deluged
+          image: "{{ .Values.image.deluged.repository }}:{{ .Values.image.deluged.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
           resources:
   {{ toYaml .Values.resources | indent 10 }}
@@ -51,6 +51,26 @@ spec:
             successThreshold: {{ .Values.probes.successThreshold }}
             tcpSocket:
               port: {{ .Values.service.p2pPort }}
+        - name: delugeweb
+          image: "{{ .Values.image.delugeweb.repository }}:{{ .Values.image.delugeweb.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          resources:
+  {{ toYaml .Values.resources | indent 10 }}
+          ports:
+            - name: web
+              containerPort: {{ .Values.service.webPort }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              subPath: {{ .Values.persistence.config.subPath }}
+          readinessProbe:
+            failureThreshold: {{ .Values.probes.failureThreshold }}
+            initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.successThreshold }}
+            tcpSocket:
+              port: {{ .Values.service.webPort }}
       volumes:
         - name: config
           persistentVolumeClaim:

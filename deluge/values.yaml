@@ -3,15 +3,21 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: alexiri/deluge-deluged
-  tag: 0.2
   pullPolicy: Always
+  deluged:
+    repository: alexiri/deluge-deluged
+    tag: 0.2
+  delugeweb:
+    repository: alexiri/deluge-delugeweb
+    tag: 0.1
 
 service:
   rpcPort: 58846
   rpcPortPublic: 30846
   p2pPort: 58946
   p2pPortPublic: 30946
+  webPort: 8112
+  webPortPublic: 30811
 
 persistence:
   config:
