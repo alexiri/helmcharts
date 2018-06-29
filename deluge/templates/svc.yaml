@@ -8,16 +8,17 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: NodePort
   ports:
     - name: rpc
-      port: {{ .Values.service.rpcPort }}
       targetPort: rpc
+      nodePort: {{ .Values.service.rpcPortPublic }}
     - name: p2p
-      port: {{ .Values.service.p2pPort }}
       targetPort: p2p
+      nodePort: {{ .Values.service.p2pPortPublic }}
     - name: p2p-udp
-      port: {{ .Values.service.p2pPort }}
       targetPort: p2p
+      nodePort: {{ .Values.service.p2pPortPublic }}
       protocol: UDP
   selector:
     app: {{ template "deluge.name" . }}

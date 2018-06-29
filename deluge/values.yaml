@@ -5,11 +5,13 @@
 image:
   repository: alexiri/deluge-deluged
   tag: 0.2
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   rpcPort: 58846
+  rpcPortPublic: 30846
   p2pPort: 58946
+  p2pPortPublic: 30946
 
 persistence:
   config:
@@ -27,8 +29,8 @@ resources: {}
 #    cpu: 300m
 
 probes:
-    failureThreshold: 3
-    initialDelaySeconds: 120
+    failureThreshold: 5
+    initialDelaySeconds: 10
     periodSeconds: 30
     timeoutSeconds: 15
     successThreshold: 1
