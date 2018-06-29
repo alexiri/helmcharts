@@ -4,7 +4,7 @@
 
 image:
   repository: alexiri/deluge-deluged
-  tag: 0.1
+  tag: 0.2
   pullPolicy: IfNotPresent
 
 service:
