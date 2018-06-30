@@ -28,7 +28,7 @@ spec:
         command:  ["rm", "-fr", "/var/lib/mysql/lost+found"]
         volumeMounts:
         - name: data
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/mysql:z
           {{- if .Values.persistence.subPath }}
           subPath: {{ .Values.persistence.subPath }}
           {{- end }}
@@ -99,17 +99,17 @@ spec:
           failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         volumeMounts:
         - name: data
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/mysql:z
           {{- if .Values.persistence.subPath }}
           subPath: {{ .Values.persistence.subPath }}
           {{- end }}
         {{- if .Values.configurationFiles }}
         - name: configurations
-          mountPath: /etc/mysql/conf.d
+          mountPath: /etc/mysql/conf.d:z
         {{- end }}
         {{- if .Values.initializationFiles }}
         - name: migrations
-          mountPath: /docker-entrypoint-initdb.d
+          mountPath: /docker-entrypoint-initdb.d:z
         {{- end }}
         {{- if .Values.ssl.enabled }}
         - name: certificates
