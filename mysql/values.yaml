@@ -1,7 +1,7 @@
 ## mysql image version
 ## ref: https://hub.docker.com/r/library/mysql/tags/
 ##
-image: "mysql"
+image: "alexiri/mysql"
 imageTag: "5.7"
 
 ## Specify password for root user
