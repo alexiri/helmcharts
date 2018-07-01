@@ -42,7 +42,6 @@ spec:
               subPath: {{ .Values.persistence.config.subPath }}
             - name: downloads
               mountPath: /downloads
-              subPath: {{ .Values.persistence.config.subPath }}
           readinessProbe:
             failureThreshold: {{ .Values.probes.failureThreshold }}
             initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
