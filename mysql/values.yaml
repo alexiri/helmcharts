@@ -11,9 +11,9 @@ imageTag: "5.7"
 
 ## Create a database user
 ##
-mysqlUser: koji
+mysqlUser: kodi
 ## Default: random 10 character string
-mysqlPassword: koji
+mysqlPassword: kodi
 
 ## Allow unauthenticated access, uncomment to enable
 ##
@@ -79,12 +79,12 @@ resources:
 
 # Custom mysql configuration files used to override default mysql settings
 configurationFiles: {}
-#  mysql.cnf: |-
-#    [mysqld]
-#    skip-name-resolve
-#    ssl-ca=/ssl/ca.pem
-#    ssl-cert=/ssl/server-cert.pem
-#    ssl-key=/ssl/server-key.pem
+  mysql.cnf: |-
+    [mysqld]
+    skip-name-resolve
+    query_cache_type = 1
+    query_cache_size = 15728640
+    query_cache_limit = 1048576
 
 # Custom mysql init SQL files used to initialize the database
 initializationFiles: {}
