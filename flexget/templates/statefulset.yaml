@@ -34,15 +34,20 @@ spec:
             - name: config
               mountPath: /config
               subPath: {{ .Values.persistence.config.subPath }}
-          readinessProbe:
-            failureThreshold: {{ .Values.probes.failureThreshold }}
-            initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.periodSeconds }}
-            timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
-            successThreshold: {{ .Values.probes.successThreshold }}
-            tcpSocket:
-              port: {{ .Values.service.webPort }}
+            - name: downloads
+              mountPath: /downloads
+          #readinessProbe:
+          #  failureThreshold: {{ .Values.probes.failureThreshold }}
+          #  initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+          #  periodSeconds: {{ .Values.probes.periodSeconds }}
+          #  timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+          #  successThreshold: {{ .Values.probes.successThreshold }}
+          #  tcpSocket:
+          #    port: {{ .Values.service.webPort }}
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.config.existingClaim | default (include "flexget.fullname" .) }}
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.data.existingClaim | default (include "flexget.fullname" .) }}
