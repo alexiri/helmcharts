@@ -22,10 +22,10 @@ persistence:
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
-resources: {}
-#  requests:
-#    memory: 512Mi
-#    cpu: 300m
+resources:
+  requests:
+    memory: 350Mi
+    cpu: "0.1"
 
 probes:
     failureThreshold: 3
