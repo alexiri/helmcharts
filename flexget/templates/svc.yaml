@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "flexget.fullname" . }}
+  labels:
+    app: {{ template "flexget.name" . }}
+    chart: {{ template "flexget.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - name: web
+      targetPort: web
+      port: {{ .Values.service.webPort }}
+      nodePort: {{ .Values.service.webPortPublic }}
+  selector:
+    app: {{ template "flexget.name" . }}
+    release: {{ .Release.Name }}

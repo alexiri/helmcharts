@@ -1,0 +1,32 @@
+# Default values for flexget.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  pullPolicy: Always
+  repository: alexiri/flexget
+  tag: 0.1
+
+service:
+  webPort: 5050
+  webPortPublic: 30505
+
+persistence:
+  config:
+    subPath: flexget
+    existingClaim: shared-data
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+resources:
+  requests:
+    memory: 150Mi
+    cpu: 300m
+
+probes:
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    timeoutSeconds: 15
+    successThreshold: 1

@@ -1,0 +1,15 @@
+apiVersion: v1
+name: flexget
+version: 0.1.0
+appVersion: "2.14.2"
+description: Flexget download automation tool
+keywords:
+  - torrent
+  - flexget
+home: https://www.flexget.com/
+icon: https://raw.githubusercontent.com/alexiri/helmcharts/master/flexget/Flexget-Logo.png
+sources:
+  - https://github.com/alexiri/helmcharts
+maintainers:
+  - name: Alex
+    email: alex.iribarren@gmail.com

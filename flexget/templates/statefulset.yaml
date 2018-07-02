@@ -1,0 +1,48 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ template "flexget.fullname" . }}
+  labels:
+    app: {{ template "flexget.name" . }}
+    chart: {{ template "flexget.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "flexget.name" . }}
+      release: {{ .Release.Name }}
+  serviceName: {{ template "flexget.name" . }}
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ template "flexget.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: flexget
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          resources: {{ toYaml .Values.resources | nindent 12 }}
+          ports:
+            - name: web
+              containerPort: {{ .Values.service.webPort }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              subPath: {{ .Values.persistence.config.subPath }}
+          readinessProbe:
+            failureThreshold: {{ .Values.probes.failureThreshold }}
+            initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.timeoutSeconds }}
+            successThreshold: {{ .Values.probes.successThreshold }}
+            tcpSocket:
+              port: {{ .Values.service.webPort }}
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.config.existingClaim | default (include "flexget.fullname" .) }}
