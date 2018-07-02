@@ -26,8 +26,7 @@ spec:
         - name: deluged
           image: "{{ .Values.image.deluged.repository }}:{{ .Values.image.deluged.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-          resources:
-  {{ toYaml .Values.resources | indent 10 }}
+          resources: {{ toYaml .Values.resources.deluged | nindent 12 }}
           ports:
             - name: rpc
               containerPort: {{ .Values.service.rpcPort }}
@@ -53,8 +52,7 @@ spec:
         - name: delugeweb
           image: "{{ .Values.image.delugeweb.repository }}:{{ .Values.image.delugeweb.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-          resources:
-  {{ toYaml .Values.resources | indent 10 }}
+          resources: {{ toYaml .Values.resources.delugeweb | nindent 12 }}
           ports:
             - name: web
               containerPort: {{ .Values.service.webPort }}

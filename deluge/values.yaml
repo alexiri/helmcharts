@@ -29,10 +29,15 @@ persistence:
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
-resources: {}
-#  requests:
-#    memory: 512Mi
-#    cpu: 300m
+resources:
+  deluged:
+    requests:
+      memory: 150Mi
+      cpu: 300m
+  delugeweb:
+    requests:
+      memory: 50Mi
+      cpu: 100m
 
 probes:
     failureThreshold: 5
