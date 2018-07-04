@@ -7,6 +7,7 @@ keywords:
   - database
   - timeseries
 home: https://www.influxdata.com/time-series-platform/influxdb/
+icon: https://raw.githubusercontent.com/alexiri/helmcharts/master/influxdb/Influxdb-Logo.svg
 sources:
   - https://github.com/influxdata/influxdb
 maintainers:
