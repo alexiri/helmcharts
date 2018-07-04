@@ -41,9 +41,9 @@ spec:
       port: {{ .Values.service.port }}
       protocol: TCP
       targetPort: 3000
-{{ if (and (eq .Values.service.type "NodePort") (not (empty .Values.service.nodePort))) }}
+{{- if (and (eq .Values.service.type "NodePort") (not (empty .Values.service.nodePort))) }}
       nodePort: {{.Values.service.nodePort}}
-{{ end }}
+{{- end }}
   selector:
     app: {{ template "grafana.name" . }}
     release: {{ .Release.Name }}
