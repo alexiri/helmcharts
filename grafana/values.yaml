@@ -11,7 +11,7 @@ deploymentStrategy: RollingUpdate
 
 image:
   repository: grafana/grafana
-  tag: 5.1.3
+  tag: 5.2.1
   pullPolicy: IfNotPresent
 
   ## Optionally specify an array of imagePullSecrets.
@@ -126,11 +126,17 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
+    - name: InfluxDB
+      type: influxdb
+      url: http://influxdb-influxdb.iot.svc.cluster.local
+      access: proxy
+      user: grafana
+      password: grafana
+      isDefault: true
     - name: Prometheus
       type: prometheus
       url: http://prometheus.kube
       access: proxy
-      isDefault: true
 
 ## Configure grafana dashboard providers
 ## ref: http://docs.grafana.org/administration/provisioning/#dashboards
