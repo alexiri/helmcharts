@@ -23,7 +23,7 @@ spec:
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
         resources:
-{{ toYaml .Values.resources | indent 10 -}}
+{{ toYaml .Values.resources | indent 10 }}
         ports:
         - name: api
           containerPort: {{ .Values.config.http.bind_address }}
@@ -66,6 +66,9 @@ spec:
         volumeMounts:
         - name: data
           mountPath: {{ .Values.config.storage_directory }}
+          {{- if .Values.persistence.subPath }}
+          subPath: {{ .Values.persistence.subPath }}
+          {{- end }}
         - name: config
           mountPath: /etc/influxdb
       volumes:

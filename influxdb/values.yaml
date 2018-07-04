@@ -25,11 +25,12 @@ service:
 ## Persist data to a persistent volume
 ##
 persistence:
-  enabled: false
+  enabled: true
   ## If true will use an existing PVC instead of creating one
-  # useExisting: false
+  useExisting: true
   ## Name of existing PVC to be used in the influx deployment
-  # name:
+  name: shared-data
+  subPath: influxdb
   ## influxdb data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -45,7 +46,7 @@ persistence:
 ## Defaults indicated below
 ##
 setDefaultUser:
-  enabled: false
+  enabled: true
 
   ## Image of the container used for job
   ## Default: appropriate/curl:latest
@@ -81,10 +82,10 @@ setDefaultUser:
 resources:
   requests:
     memory: 256Mi
-    cpu: 0.1
+    cpu: '0.1'
   limits:
     memory: 16Gi
-    cpu: 8
+    cpu: '8'
 
 ingress:
   enabled: false
