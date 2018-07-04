@@ -13,40 +13,44 @@ spec:
     metadata:
       labels:
         app: {{ template "influxdb.fullname" . }}
+      annotations:
+        # Include a hash of the config in the pod template
+        # This means that if the config changes, the deployment will be rolled
+        checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
     spec:
       containers:
       - name: {{ template "influxdb.fullname" . }}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 -}}
         ports:
         - name: api
           containerPort: {{ .Values.config.http.bind_address }}
         {{ if .Values.config.admin.enabled -}}
         - name: admin
           containerPort: {{ .Values.config.admin.bind_address }}
-        {{- end }}
+        {{ end -}}
         {{ if .Values.config.graphite.enabled -}}
         - name: graphite
           containerPort: {{ .Values.config.graphite.bind_address }}
-        {{- end }}
+        {{ end -}}
         {{ if .Values.config.collectd.enabled -}}
         - name: collectd
           containerPort: {{ .Values.config.collectd.bind_address }}
-        {{- end }}
+        {{ end -}}
         {{ if .Values.config.udp.enabled -}}
         - name: udp
           containerPort: {{ .Values.config.udp.bind_address }}
-        {{- end }}
+        {{ end -}}
         {{ if .Values.config.opentsdb.enabled -}}
         - name: opentsdb
           containerPort: {{ .Values.config.opentsdb.bind_address }}
-        {{- end }}
+        {{ end -}}
         {{ if .Values.env }}
         env:
 {{ toYaml .Values.env | indent 10 }}
-        {{- end }}
+        {{ end -}}
         livenessProbe:
           httpGet:
             path: /ping
