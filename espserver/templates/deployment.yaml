@@ -1,0 +1,60 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "espserver.fullname" . }}
+  labels:
+    app: {{ template "espserver.name" . }}
+    chart: {{ template "espserver.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "espserver.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "espserver.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - name: app
+              mountPath: /app
+              subPath: {{ .Values.persistence.app.subPath }}
+          livenessProbe:
+            httpGet:
+              path: /esp/status
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /esp/status
+              port: http
+          resources:
+      volumes:
+        - name: app
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.app.existingClaim | default (include "espserver.fullname" .) }}
+    {{- with .Values.resources }}
+{{ toYaml .Values.resources | indent 12 }}
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
