@@ -40,7 +40,8 @@ service:
   type: NodePort
   port: 80
   nodePort: 30080
-  annotations: {}
+  annotations:
+    'nginx.ingress.kubernetes.io/rewrite-target': /
   labels: {}
 
 ingress:
@@ -199,6 +200,9 @@ grafana.ini:
     provisioning: /etc/grafana/provisioning
   analytics:
     check_for_updates: true
+    reporting_enabled: false
+  server:
+    root_url: '%(protocol)s://%(domain)s/grafana/'
   log:
     mode: console
   grafana_net:
