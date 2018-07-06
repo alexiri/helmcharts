@@ -53,7 +53,8 @@ ingress:
   path: /
   hosts:
     - grafana.kube
-  tls: []
+  tls:
+    - secretName: grafana-certificate-secret
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
