@@ -54,7 +54,10 @@ ingress:
   hosts:
     - grafana.kube
   tls:
-    - secretName: grafana-certificate-secret
+    - secretName: selfsigned
+      hosts:
+        - alexiri.duckdns.org
+        - grafana.kube
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -129,9 +132,9 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
-    - name: InfluxDB
+    - name: Sensors
       type: influxdb
-      url: http://influxdb-influxdb.iot.svc.cluster.local
+      url: http://influxdb-influxdb.iot.svc.kube:8086
       access: proxy
       user: grafana
       password: grafana
