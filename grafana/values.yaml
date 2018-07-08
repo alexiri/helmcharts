@@ -40,13 +40,13 @@ service:
   type: NodePort
   port: 80
   nodePort: 30080
-  annotations:
-    'nginx.ingress.kubernetes.io/rewrite-target': /
+  annotations: {}
   labels: {}
 
 ingress:
   enabled: true
-  annotations: {}
+  annotations:
+    'nginx.ingress.kubernetes.io/rewrite-target': /
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   labels: {}
