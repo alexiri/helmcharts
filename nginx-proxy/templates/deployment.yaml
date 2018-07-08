@@ -32,11 +32,6 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/nginx/conf.d
-          # Load the configuration files for nginx
-          volumes:
-            - name: config
-              configMap:
-                name: nginx-proxy-config
           livenessProbe:
             httpGet:
               path: /
@@ -59,3 +54,8 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+      # Load the configuration files for nginx
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-proxy-config
