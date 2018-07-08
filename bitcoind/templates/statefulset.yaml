@@ -46,6 +46,8 @@ spec:
             - name: "MALLOC_ARENA_MAX"
               value: "1"
           args:
+            - "-printtoconsole"
+            - "-disablewallet"
             - "-blocksonly"
             - "-banscore 1"
           readinessProbe:
