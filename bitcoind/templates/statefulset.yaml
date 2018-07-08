@@ -46,10 +46,9 @@ spec:
           env:
 {{ toYaml .Values.env | indent 12 }}
           {{ end -}}
-          {{ if .Values.args -}}
           args:
-{{ toYaml .Values.args | indent 12 }}
-          {{ end -}}
+            - "-blocksonly"
+            - "-banscore 1"
           readinessProbe:
             failureThreshold: {{ .Values.probes.failureThreshold }}
             initialDelaySeconds: {{ .Values.probes.initialDelaySeconds }}
