@@ -1,0 +1,29 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "nginx-proxy.fullname" . }}
+  labels:
+    app: {{ template "nginx-proxy.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+  default.conf: |+
+    events {
+      worker_connections  1024;
+    }
+
+    stream {
+      upstream backend {
+        server 192.168.1.4:443;
+        server 192.168.1.5:443;
+      }
+
+      server {
+        listen 80 default_server;
+
+        proxy_set_header Host "external.kube";
+        proxy_pass stream_backend;
+      }
+    }
