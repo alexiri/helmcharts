@@ -7,11 +7,6 @@ image:
   tag: 0.16.1
   pullPolicy: Always
 
-env:
-  # Reduce bitcoind's memory usage
-  - name: MALLOC_ARENA_MAX
-    value: "1"
-
 service:
   rpcPort: 8332
   p2pPort: 8333

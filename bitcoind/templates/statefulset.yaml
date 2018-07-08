@@ -42,10 +42,9 @@ spec:
               {{- if .Values.persistence.subPath }}
               subPath: {{ .Values.persistence.subPath }}
               {{- end }}
-          {{ if .Values.env -}}
           env:
-{{ toYaml .Values.env | indent 12 }}
-          {{ end -}}
+            - name: "MALLOC_ARENA_MAX"
+              value: "1"
           args:
             - "-blocksonly"
             - "-banscore 1"
