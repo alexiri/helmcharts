@@ -10,7 +10,7 @@ image:
 env:
   # Reduce bitcoind's memory usage
   - name: MALLOC_ARENA_MAX
-    value: 1
+    value: "1"
 
 service:
   rpcPort: 8332
