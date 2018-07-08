@@ -7,8 +7,11 @@ metadata:
     chart: {{ template "grafana.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-{{- with .Values.annotations }}
   annotations:
+    # Include a hash of the config in the pod template
+    # This means that if the config changes, the deployment will be rolled
+    checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum }}
+{{- with .Values.annotations }}
 {{ toYaml . | indent 4 }}
 {{- end }}
 spec:
