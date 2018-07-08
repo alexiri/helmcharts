@@ -7,6 +7,8 @@ metadata:
     chart: {{ template "nginx-proxy.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  annotations:
+    checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -18,8 +20,6 @@ spec:
       labels:
         app: {{ template "nginx-proxy.name" . }}
         release: {{ .Release.Name }}
-    annotations:
-      checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
