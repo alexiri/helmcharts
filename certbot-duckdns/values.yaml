@@ -1,0 +1,18 @@
+# Default values for certbot-duckdns.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+image:
+  repository: alexiri/certbot-duckdns
+  tag: 0.1
+  pullPolicy: IfNotPresent
+
+schedule: "@daily"
+domain: mydomain.com
+email: me@mydomain.com
+apikey: blabla
+
+persistence:
+  subPath: letsencrypt
+  existingClaim: shared-data

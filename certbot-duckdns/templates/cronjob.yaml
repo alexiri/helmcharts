@@ -1,0 +1,42 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "certbot-duckdns.fullname" . }}
+  labels:
+    app: {{ template "certbot-duckdns.name" . }}
+    chart: {{ template "certbot-duckdns.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  metadata:
+    labels:
+      app: {{ template "certbot-duckdns.name" . }}
+      release: {{ .Release.Name }}
+  schedule: "{{ .Values.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ template "certbot-duckdns.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+              - name: API_KEY
+                value: "{{ .Values.apikey }}"
+            args:
+              - "-d {{ .Values.domain }}"
+              - "-m {{ .Values.email }}"
+            volumeMounts:
+              - name: certs
+                mountPath: /etc/letsencrypt
+                subPath: {{ .Values.persistence.subPath }}
+          volumes:
+            - name: certs
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.existingClaim }}
+          restartPolicy: OnFailure 
