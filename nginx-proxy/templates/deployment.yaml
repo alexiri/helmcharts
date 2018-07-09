@@ -45,7 +45,7 @@ spec:
               readOnly: true
             - name: certs
               mountPath: /certs
-              subPath: {{ .Values.certs.subPath }}/live/{{ .Values.certs.domain }}
+              subPath: {{ .Values.certs.subPath }}
               readOnly: true
           livenessProbe:
             httpGet:
