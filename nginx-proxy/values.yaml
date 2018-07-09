@@ -5,27 +5,20 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: 1.15-alpine
+  repository: alexiri/nginx-kubernetes-reload
+  tag: v2.1.0
   pullPolicy: Always
 
 service:
   type: NodePort
-  port: 80
+  port: 443
   nodePort: 30443
 
-ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  path: /
-  hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
+certs:
+  domain: mydomain.com
+  existingClaim: shared-data
+  subPath: letsencrypt
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -38,9 +31,3 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

@@ -11,6 +11,10 @@ metadata:
     checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: {{ template "nginx-proxy.name" . }}
@@ -26,37 +30,42 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: https
+              containerPort: 443
               protocol: TCP
+            - name: health
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: WATCH_PATHS
+              value: "/etc/nginx /certs/live/"
           volumeMounts:
             - name: config
-              mountPath: /etc/nginx
+              mountPath: /etc/nginx/conf.d/
+              readOnly: true
+            - name: certs
+              mountPath: /certs
+              subPath: {{ .Values.certs.subPath }}
               readOnly: true
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: health
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: health
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-{{ toYaml . | indent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-{{ toYaml . | indent 8 }}
-    {{- end }}
       # Load the configuration files for nginx
       volumes:
         - name: config
           configMap:
             name: {{ template "nginx-proxy.fullname" . }}
+        - name: certs
+          persistentVolumeClaim:
+            claimName: {{ .Values.certs.existingClaim }}

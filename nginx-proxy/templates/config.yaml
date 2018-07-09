@@ -9,21 +9,21 @@ metadata:
     release: "{{ .Release.Name }}"
     heritage: "{{ .Release.Service }}"
 data:
-  nginx.conf: |+
-    events {
-      worker_connections  1024;
-    }
-
-    stream {
-      upstream backend {
-        server 192.168.1.4:443;
-        server 192.168.1.5:443;
-      }
-
+  grafana.conf: |+
+    http {
       server {
-        listen 80 default_server;
+        listen 443 ssl;
+        ssl_certificate           /certs/live/{{ .Values.certs.domain }}/cert.pem;
+        ssl_certificate_key       /certs/live/{{ .Values.certs.domain }}/privkey.pem;
+        ssl_trusted_certificate   /certs/live/{{ .Values.certs.domain }}/chain.pem;
+        ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers               HIGH:!aNULL:!MD5;
 
-        proxy_set_header Host "external.kube";
-        proxy_pass stream_backend;
+        location /grafana {
+          rewrite /grafana/(.*) /$1 break;
+          proxy_redirect     off;
+          proxy_set_header   Host "external.kube";
+          proxy_pass         http://grafana.iot.svc.kube:30080/
+        }
       }
     }
