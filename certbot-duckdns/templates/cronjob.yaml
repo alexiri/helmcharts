@@ -8,10 +8,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  metadata:
-    labels:
-      app: {{ template "certbot-duckdns.name" . }}
-      release: {{ .Release.Name }}
   schedule: "{{ .Values.schedule }}"
   jobTemplate:
     spec:
