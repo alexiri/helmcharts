@@ -10,20 +10,7 @@ metadata:
     heritage: "{{ .Release.Service }}"
 data:
   grafana.conf: |+
-    http {
-      server {
-        listen 443 ssl;
-        ssl_certificate           /certs/live/{{ .Values.certs.domain }}/cert.pem;
-        ssl_certificate_key       /certs/live/{{ .Values.certs.domain }}/privkey.pem;
-        ssl_trusted_certificate   /certs/live/{{ .Values.certs.domain }}/chain.pem;
-        ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
-        ssl_ciphers               HIGH:!aNULL:!MD5;
-
-        location /grafana {
-          rewrite /grafana/(.*) /$1 break;
-          proxy_redirect     off;
-          proxy_set_header   Host "external.kube";
-          proxy_pass         http://grafana.iot.svc.kube:30080/
-        }
-      }
+    location /grafana {
+      rewrite /grafana/(.*) /$1 break;
+      proxy_pass         http://grafana.iot.svc.kube:80/;
     }

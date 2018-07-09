@@ -7,6 +7,8 @@ metadata:
     chart: {{ template "nginx-proxy.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  annotations:
+    use-proxy-protocol: "true"
 spec:
   type: {{ .Values.service.type }}
   ports:

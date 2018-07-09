@@ -38,14 +38,14 @@ spec:
               protocol: TCP
           env:
             - name: WATCH_PATHS
-              value: "/etc/nginx /certs/live/"
+              value: "/etc/nginx /certs"
           volumeMounts:
             - name: config
               mountPath: /etc/nginx/conf.d/
               readOnly: true
             - name: certs
               mountPath: /certs
-              subPath: {{ .Values.certs.subPath }}
+              subPath: {{ .Values.certs.subPath }}/live/{{ .Values.certs.domain }}
               readOnly: true
           livenessProbe:
             httpGet:

@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: alexiri/nginx-kubernetes-reload
-  tag: v2.1.0
+  tag: v2.2.0
   pullPolicy: Always
 
 service:
