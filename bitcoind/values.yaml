@@ -24,7 +24,7 @@ persistence:
 ##
 resources:
   requests:
-    memory: 350Mi
+    memory: 500Mi
     cpu: "0.1"
 
 probes:
