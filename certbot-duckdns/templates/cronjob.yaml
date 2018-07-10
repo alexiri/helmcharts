@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   schedule: "{{ .Values.schedule }}"
+  concurrencyPolicy: Replace
   jobTemplate:
     spec:
       template:
