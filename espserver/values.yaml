@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  repository: jazzdd/alpine-flask
-  tag: latest
+  repository: tiangolo/uwsgi-nginx-flask
+  tag: python3.6-alpine3.7
   pullPolicy: Always
 
 service:
