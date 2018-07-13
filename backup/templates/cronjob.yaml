@@ -26,6 +26,7 @@ spec:
               - '/root/restic.sh'
             args:
               - '--exclude-file=/root/excludes.txt'
+              - '--hostname kubernetes'
               - 'backup /data'
             volumeMounts:
               - name: data
