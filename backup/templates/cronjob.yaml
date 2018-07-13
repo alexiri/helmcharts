@@ -23,20 +23,17 @@ spec:
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             command: 
-              - '/bin/sh'
-            #args:
-            #  - "-d {{ .Values.domain }}"
-            #  - "-m {{ .Values.email }}"
+              - '/root/restic.sh'
+            args:
+              - '--exclude-file=/root/excludes.txt'
+              - 'backup /data'
             volumeMounts:
-              - name: scripts
-                mountPath: /root/.restic
+              - name: data
+                mountPath: /root
                 subPath: {{ .Values.persistence.restic.subPath }}
               - name: data
                 mountPath: /data
           volumes:
-            - name: scripts
-              persistentVolumeClaim:
-                claimName: {{ .Values.persistence.restic.existingClaim }}
             - name: data
               persistentVolumeClaim:
                 claimName: {{ .Values.persistence.kube.existingClaim }}
