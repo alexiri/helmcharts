@@ -1,0 +1,18 @@
+# Default values for backup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+image:
+  repository: restic/restic
+  tag: 0.9.1
+  pullPolicy: IfNotPresent
+
+schedule: "@daily"
+
+persistence:
+  restic:
+    subPath: restic
+    existingClaim: shared-data
+  kube:
+    existingClaim: shared-data

@@ -1,0 +1,43 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "backup.fullname" . }}
+  labels:
+    app: {{ template "backup.name" . }}
+    chart: {{ template "backup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: "{{ .Values.schedule }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ template "backup.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: 
+              - '/bin/sh'
+            #args:
+            #  - "-d {{ .Values.domain }}"
+            #  - "-m {{ .Values.email }}"
+            volumeMounts:
+              - name: scripts
+                mountPath: /root/.restic
+                subPath: {{ .Values.persistence.restic.subPath }}
+              - name: data
+                mountPath: /data
+          volumes:
+            - name: scripts
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.restic.existingClaim }}
+            - name: data
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.kube.existingClaim }}
+          restartPolicy: OnFailure 
