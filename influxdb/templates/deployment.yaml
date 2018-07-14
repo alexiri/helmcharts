@@ -18,6 +18,7 @@ spec:
         # This means that if the config changes, the deployment will be rolled
         checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
     spec:
+      terminationGracePeriodSeconds: 120
       containers:
       - name: {{ template "influxdb.fullname" . }}
         image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
