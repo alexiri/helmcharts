@@ -8,7 +8,10 @@ image:
   tag: 0.1
   pullPolicy: IfNotPresent
 
-schedule: "0 */4 * * *"
+schedule:
+  kube: "0 */4 * * *"
+  nas: "@daily"
+  cleanup: "0 23 * * *"
 
 persistence:
   restic:
@@ -16,3 +19,5 @@ persistence:
     existingClaim: shared-data
   kube:
     existingClaim: shared-data
+  data:
+    existingClaim: download-data

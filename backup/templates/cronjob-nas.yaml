@@ -1,14 +1,14 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ template "backup.fullname" . }}-kube
+  name: {{ template "backup.fullname" . }}-nas
   labels:
     app: {{ template "backup.name" . }}
     chart: {{ template "backup.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  schedule: "{{ .Values.schedule }}"
+  schedule: "{{ .Values.schedule.nas }}"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -24,17 +24,22 @@ spec:
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             args:
               - '/restic/restic.sh'
-              - '--exclude-file=/restic/excludes.txt'
-              - '--hostname kubernetes'
-              - 'backup /data'
+              - '--exclude-file=/restic/excludes-nas.txt'
+              - '--hostname nas'
+              - 'backup /data/backup /data/pictures'
             volumeMounts:
-              - name: data
+              - name: restic
                 mountPath: /restic
                 subPath: {{ .Values.persistence.restic.subPath }}
+                readOnly: true
               - name: data
                 mountPath: /data
+                readOnly: true
           volumes:
-            - name: data
+            - name: restic
               persistentVolumeClaim:
                 claimName: {{ .Values.persistence.kube.existingClaim }}
+            - name: data
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.data.existingClaim }}
           restartPolicy: OnFailure 

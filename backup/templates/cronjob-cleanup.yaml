@@ -1,0 +1,36 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "backup.fullname" . }}-cleanup
+  labels:
+    app: {{ template "backup.name" . }}
+    chart: {{ template "backup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: "{{ .Values.schedule.cleanup }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ template "backup.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            args:
+              - '/restic/cleanup.sh'
+            volumeMounts:
+              - name: restic
+                mountPath: /restic
+                subPath: {{ .Values.persistence.restic.subPath }}
+                readOnly: true
+          volumes:
+            - name: restic
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.kube.existingClaim }}
+          restartPolicy: OnFailure 

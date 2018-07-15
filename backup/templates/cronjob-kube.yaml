@@ -1,0 +1,42 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "backup.fullname" . }}-kube
+  labels:
+    app: {{ template "backup.name" . }}
+    chart: {{ template "backup.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: "{{ .Values.schedule.kube }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: {{ template "backup.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            args:
+              - '/restic/restic.sh'
+              - '--exclude-file=/restic/excludes-kube.txt'
+              - '--hostname kubernetes'
+              - 'backup /data'
+            volumeMounts:
+              - name: data
+                mountPath: /restic
+                subPath: {{ .Values.persistence.restic.subPath }}
+                readOnly: true
+              - name: data
+                mountPath: /data
+                readOnly: true
+          volumes:
+            - name: data
+              persistentVolumeClaim:
+                claimName: {{ .Values.persistence.kube.existingClaim }}
+          restartPolicy: OnFailure 
