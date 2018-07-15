@@ -22,8 +22,10 @@ spec:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command:
+              - '/restic/restic.sh'
             args:
-              - '--exclude-file=excludes.txt'
+              - '--exclude-file=/restic/excludes.txt'
               - '--hostname kubernetes'
               - 'backup /data'
             volumeMounts:
