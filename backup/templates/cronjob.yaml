@@ -22,9 +22,8 @@ spec:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
-            command:
-              - '/restic/restic.sh'
             args:
+              - '/restic/restic.sh'
               - '--exclude-file=/restic/excludes.txt'
               - '--hostname kubernetes'
               - 'backup /data'
