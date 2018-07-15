@@ -28,7 +28,7 @@ spec:
               - 'backup /data'
             volumeMounts:
               - name: data
-                mountPath: /root
+                mountPath: /restic
                 subPath: {{ .Values.persistence.restic.subPath }}
               - name: data
                 mountPath: /data
