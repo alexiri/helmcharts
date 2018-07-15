@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ template "backup.fullname" . }}
+  name: {{ template "backup.fullname" . }}-kube
   labels:
     app: {{ template "backup.name" . }}
     chart: {{ template "backup.chart" . }}
@@ -23,7 +23,7 @@ spec:
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
             args:
-              - '--exclude-file=/root/excludes.txt'
+              - '--exclude-file=excludes.txt'
               - '--hostname kubernetes'
               - 'backup /data'
             volumeMounts:
