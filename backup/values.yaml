@@ -4,8 +4,8 @@
 
 
 image:
-  repository: restic/restic
-  tag: 0.9.1
+  repository: alexiri/restic
+  tag: 0.1
   pullPolicy: IfNotPresent
 
 schedule: "0 */4 * * *"
