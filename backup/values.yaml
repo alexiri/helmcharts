@@ -10,8 +10,8 @@ image:
 
 schedule:
   kube: "0 */4 * * *"
-  nas: "@daily"
-  cleanup: "0 23 * * *"
+  nas: "0 1 * * *"
+  cleanup: "0 21 * * *"
 
 persistence:
   restic:
