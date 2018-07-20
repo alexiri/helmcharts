@@ -52,12 +52,12 @@ ingress:
   labels: {}
   path: /grafana
   hosts:
-    - grafana.kube
+    - grafana.local
   tls:
     - secretName: selfsigned
       hosts:
         - alexiri.duckdns.org
-        - grafana.kube
+        - grafana.local
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
