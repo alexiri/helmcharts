@@ -134,7 +134,7 @@ datasources:
     datasources:
     - name: Sensors
       type: influxdb
-      url: http://influxdb-influxdb.iot.svc.kube:8086
+      url: http://influxdb-influxdb.iot:8086
       access: proxy
       user: grafana
       password: grafana
@@ -142,7 +142,7 @@ datasources:
       isDefault: true
     - name: Prometheus
       type: prometheus
-      url: http://prometheus-server.prometheus.svc.kube
+      url: http://prometheus-server.prometheus
       access: proxy
 
 ## Configure grafana dashboard providers
