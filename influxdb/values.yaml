@@ -2,8 +2,8 @@
 ## ref: https://hub.docker.com/r/library/influxdb/tags/
 image:
   repo: "influxdb"
-  tag: "1.5.4-alpine"
-  pullPolicy: IfNotPresent
+  tag: "alpine"
+  pullPolicy: Always
 
 ## Specify a service type
 ## NodePort is default
