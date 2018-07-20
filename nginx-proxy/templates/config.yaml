@@ -12,5 +12,5 @@ data:
   grafana.conf: |+
     location /grafana {
       rewrite /grafana/(.*) /$1 break;
-      proxy_pass         http://grafana.iot.svc.kube:80/;
+      proxy_pass         http://grafana.iot:80/;
     }
