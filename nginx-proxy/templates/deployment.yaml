@@ -9,6 +9,7 @@ metadata:
     heritage: {{ .Release.Service }}
   annotations:
     checksum/config: {{ include (print .Template.BasePath "/config.yaml") . | sha256sum }}
+    use-proxy-protocol: "true"
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
