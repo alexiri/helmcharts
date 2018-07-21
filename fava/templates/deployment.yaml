@@ -24,11 +24,13 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: FAVA_OPTIONS
+              value: "-H 0.0.0.0 -p {{ .Values.service.port }}"
             - name: BEANCOUNT_INPUT_FILE
               value: "/data/{{ .Values.beancount }}"
           ports:
             - name: http
-              containerPort: 5000
+              containerPort: {{ .Values.service.port }}
           volumeMounts:
             - name: data
               mountPath: /data
