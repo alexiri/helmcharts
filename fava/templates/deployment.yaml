@@ -25,7 +25,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: BEANCOUNT_INPUT_FILE
-              value: /data/"{{ .Values.beancount }}"
+              value: "/data/{{ .Values.beancount }}"
           ports:
             - name: http
               containerPort: 5000
