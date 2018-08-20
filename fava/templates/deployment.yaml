@@ -25,9 +25,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: FAVA_OPTIONS
-              value: "-H 0.0.0.0 -p {{ .Values.service.port }} --prefix {{ .Values.service.prefix }}"
+              value: "-H 0.0.0.0 -p {{ .Values.service.port }}"
             - name: BEANCOUNT_INPUT_FILE
               value: "/data/{{ .Values.beancount }}"
+            - name: PREFIX
+              value: "{{ .Values.service.prefix }}"
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
